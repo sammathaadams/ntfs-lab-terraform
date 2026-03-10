@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(terraform apply:*)",
+      "Bash(az login:*)"
+    ]
+  }
+}

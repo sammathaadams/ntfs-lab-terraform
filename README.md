@@ -1,19 +1,45 @@
 # NTFS File Server Lab
 
-Azure lab environment for practicing NTFS permissions, SMB file shares, and Active Directory group-based access control.
+Azure IaC for Windows Server administration — Active Directory, NTFS access control, SMB file services, and Group Policy. Deployed with Terraform, configured with PowerShell.
+
+---
+
+## What You'll Learn
+
+- Deploying Windows Server infrastructure on Azure using Terraform
+- Promoting a server to an Active Directory Domain Controller
+- Configuring NTFS permissions and SMB file shares
+- Implementing group-based access control
+- Managing Group Policy Objects (GPO) for RDP access
+- Joining Windows clients to a domain
 
 ---
 
 ## Architecture
 
-| VM | Role | OS |
-|---|---|---|
-| DC01 | Domain Controller | Windows Server 2022 |
-| FS01 | File Server | Windows Server 2022 |
-| CLIENT01 | Client Workstation | Windows 11 Pro |
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Azure VNet                             │
+│                    10.0.0.0/16                              │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │              Subnet: 10.0.1.0/24                      │  │
+│  │                                                       │  │
+│  │   ┌─────────┐    ┌─────────┐    ┌─────────────┐       │  │
+│  │   │  DC01   │    │  FS01   │    │  CLIENT01   │       │  │
+│  │   │ (AD DS) │◄───│ (Files) │◄───│ (Workstation)│      │  │
+│  │   └─────────┘    └─────────┘    └─────────────┘       │  │
+│  │                                                       │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+| VM        | Role               | OS                   |
+|-----------|--------------------|----------------------|
+| DC01      | Domain Controller  | Windows Server 2022  |
+| FS01      | File Server        | Windows Server 2022  |
+| CLIENT01  | Client Workstation | Windows 11 Pro       |
 
 - **Domain:** `lab.local`
-- **VNet:** `10.0.0.0/16` — Subnet: `10.0.1.0/24`
 - **Region:** Central US
 - **VM Size:** Standard_D2s_v3
 
@@ -25,6 +51,8 @@ Azure lab environment for practicing NTFS permissions, SMB file shares, and Acti
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - An active Azure subscription
 
+> **Cost Estimate:** Running all three VMs costs approximately $0.30–0.50/hour. Remember to run `terraform destroy` when finished to avoid unexpected charges.
+
 ---
 
 ## Deploy Infrastructure
@@ -33,17 +61,20 @@ Azure lab environment for practicing NTFS permissions, SMB file shares, and Acti
 # 1. Login to Azure
 az login
 
-# 2. Copy and fill in your values
+# 2. Copy and configure variables
 cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your values
 
 # 3. Initialize and deploy
 terraform init
 terraform apply
 ```
 
-> **Note:** `terraform.tfvars` is excluded from git. Never commit real passwords or IPs.
+> **Security Note:** `terraform.tfvars` is excluded from git. Never commit passwords or sensitive data.
 
-After deploy, Terraform outputs the public IPs for all three VMs.
+**Deployment time:** Approximately 10–15 minutes.
+
+After deployment, Terraform outputs the public IPs for all three VMs.
 
 ---
 
@@ -75,15 +106,15 @@ DC01 will restart automatically.
 RDP into each machine and run:
 
 ```powershell
-# Set DNS to point to DC01's private IP
+# Set DNS to point to DC01's private IP (check Terraform output for actual IP)
 $adapter = Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
-Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddresses "10.0.1.6"
+Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddresses "<DC01_PRIVATE_IP>"
 
 # Join the domain
 Add-Computer -DomainName "lab.local" -Credential (Get-Credential) -Restart
 ```
 
-Use `LAB\azureadmin` credentials when prompted.
+> **Note:** Replace `<DC01_PRIVATE_IP>` with the private IP from your Terraform output (default: `10.0.1.6`). Use `LAB\azureadmin` credentials when prompted.
 
 ---
 
@@ -91,14 +122,15 @@ Use `LAB\azureadmin` credentials when prompted.
 
 RDP into **DC01** and run:
 
-```
-scripts\02-create-ad-users-groups.ps1
+```powershell
+.\scripts\02-create-ad-users-groups.ps1
 ```
 
 This creates:
-- OUs: `Lab Users`, `Lab Groups`, `Lab Computers`
-- Groups: `GRP_Finance`, `GRP_HR`, `GRP_Sales`, `GRP_IT`
-- 5 test users (see table below)
+
+- **OUs:** `Lab Users`, `Lab Groups`, `Lab Computers`
+- **Groups:** `GRP_Finance`, `GRP_HR`, `GRP_Sales`, `GRP_IT`
+- **Users:** 5 test users (see table below)
 
 ---
 
@@ -106,8 +138,8 @@ This creates:
 
 RDP into **FS01** and run:
 
-```
-scripts\01-configure-shares-and-permissions.ps1
+```powershell
+.\scripts\01-configure-shares-and-permissions.ps1
 ```
 
 Creates shares at `C:\Shares\` and applies NTFS permissions.
@@ -118,8 +150,8 @@ Creates shares at `C:\Shares\` and applies NTFS permissions.
 
 RDP into **DC01** and run:
 
-```
-scripts\03-configure-rdp-gpo.ps1
+```powershell
+.\scripts\03-configure-rdp-gpo.ps1
 ```
 
 Then on **CLIENT01** run:
@@ -132,24 +164,24 @@ gpupdate /force
 
 ## Test Users
 
-| User | Password | Group | Finance | HR | Sales | IT |
-|---|---|---|---|---|---|---|
-| john.smith | P@ssw0rd123! | GRP_IT | Full Control | Full Control | Full Control | Full Control |
-| sarah.jones | P@ssw0rd123! | GRP_Finance | Modify | Denied | Denied | Denied |
-| mike.brown | P@ssw0rd123! | GRP_Finance | Modify | Denied | Denied | Denied |
-| lisa.white | P@ssw0rd123! | GRP_HR | Read | Modify | Denied | Denied |
-| tom.davis | P@ssw0rd123! | GRP_Sales | Denied | Denied | Modify | Denied |
+| User         | Password       | Group       | Finance      | HR      | Sales   | IT           |
+|--------------|----------------|-------------|--------------|---------|---------|--------------|
+| john.smith   | P@ssw0rd123!   | GRP_IT      | Full Control | Full    | Full    | Full Control |
+| sarah.jones  | P@ssw0rd123!   | GRP_Finance | Modify       | Denied  | Denied  | Denied       |
+| mike.brown   | P@ssw0rd123!   | GRP_Finance | Modify       | Denied  | Denied  | Denied       |
+| lisa.white   | P@ssw0rd123!   | GRP_HR      | Read         | Modify  | Denied  | Denied       |
+| tom.davis    | P@ssw0rd123!   | GRP_Sales   | Denied       | Denied  | Modify  | Denied       |
 
 ---
 
 ## NTFS Permission Reference
 
-| Flag | Meaning |
-|---|---|
-| `F` | Full Control |
-| `M` | Modify (read, write, delete — cannot change permissions) |
-| `R` | Read only |
-| `(OI)` | Object Inherit — subfiles inherit this ACE |
+| Flag   | Meaning                                         |
+|--------|-------------------------------------------------|
+| `F`    | Full Control                                    |
+| `M`    | Modify (read, write, delete — cannot change permissions) |
+| `R`    | Read only                                       |
+| `(OI)` | Object Inherit — subfiles inherit this ACE      |
 | `(CI)` | Container Inherit — subfolders inherit this ACE |
 
 ---
@@ -170,8 +202,45 @@ foreach ($share in $shares) {
 
 ---
 
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Domain join fails | Verify DNS is pointing to DC01's private IP. Run `nslookup lab.local` to test. |
+| Cannot RDP to VMs | Check NSG rules allow port 3389 from your IP. Verify VM is running in Azure portal. |
+| "Access Denied" on shares | Confirm user is in the correct group. Run `whoami /groups` to verify. |
+| GPO not applying | Run `gpupdate /force` and wait 2–5 minutes. Check `gpresult /r` for errors. |
+| Scripts fail to run | Set execution policy: `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process` |
+
+---
+
 ## Teardown
 
 ```bash
 terraform destroy
 ```
+
+> **Important:** Always destroy resources when finished to avoid ongoing charges.
+
+---
+
+## Project Structure
+
+```
+ntfs-lab-terraform/
+├── main.tf                    # Core infrastructure resources
+├── variables.tf               # Input variable definitions
+├── outputs.tf                 # Output values (IPs, etc.)
+├── versions.tf                # Provider version constraints
+├── terraform.tfvars.example   # Example variable values
+└── scripts/
+    ├── 01-configure-shares-and-permissions.ps1
+    ├── 02-create-ad-users-groups.ps1
+    └── 03-configure-rdp-gpo.ps1
+```
+
+---
+
+## License
+
+MIT
