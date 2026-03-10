@@ -1,0 +1,889 @@
+{
+  "version": 4,
+  "terraform_version": "1.14.5",
+  "serial": 26,
+  "lineage": "8e417cd3-e445-1abc-015b-f1734317dadf",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "azurerm_network_interface",
+      "name": "client01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "accelerated_networking_enabled": false,
+            "applied_dns_servers": [],
+            "auxiliary_mode": "",
+            "auxiliary_sku": "",
+            "dns_servers": [],
+            "edge_zone": "",
+            "enable_accelerated_networking": false,
+            "enable_ip_forwarding": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/client01-nic",
+            "internal_dns_name_label": "",
+            "internal_domain_name_suffix": "4kmbcnis5jsefflqs2qtj4m1ne.gx.internal.cloudapp.net",
+            "ip_configuration": [
+              {
+                "gateway_load_balancer_frontend_ip_configuration_id": "",
+                "name": "internal",
+                "primary": true,
+                "private_ip_address": "10.0.1.5",
+                "private_ip_address_allocation": "Dynamic",
+                "private_ip_address_version": "IPv4",
+                "public_ip_address_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/client01-pip",
+                "subnet_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab/subnets/Subnet-Servers"
+              }
+            ],
+            "ip_forwarding_enabled": false,
+            "location": "centralus",
+            "mac_address": "7C-ED-8D-C0-A9-4F",
+            "name": "client01-nic",
+            "private_ip_address": "10.0.1.5",
+            "private_ip_addresses": [
+              "10.0.1.5"
+            ],
+            "resource_group_name": "RG-FileServerLab",
+            "tags": {},
+            "timeouts": null,
+            "virtual_machine_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/CLIENT01"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.client01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_network_interface",
+      "name": "dc01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "accelerated_networking_enabled": false,
+            "applied_dns_servers": [],
+            "auxiliary_mode": "",
+            "auxiliary_sku": "",
+            "dns_servers": [],
+            "edge_zone": "",
+            "enable_accelerated_networking": false,
+            "enable_ip_forwarding": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/dc01-nic",
+            "internal_dns_name_label": "",
+            "internal_domain_name_suffix": "4kmbcnis5jsefflqs2qtj4m1ne.gx.internal.cloudapp.net",
+            "ip_configuration": [
+              {
+                "gateway_load_balancer_frontend_ip_configuration_id": "",
+                "name": "internal",
+                "primary": true,
+                "private_ip_address": "10.0.1.6",
+                "private_ip_address_allocation": "Dynamic",
+                "private_ip_address_version": "IPv4",
+                "public_ip_address_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/dc01-pip",
+                "subnet_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab/subnets/Subnet-Servers"
+              }
+            ],
+            "ip_forwarding_enabled": false,
+            "location": "centralus",
+            "mac_address": "70-A8-A5-24-C8-63",
+            "name": "dc01-nic",
+            "private_ip_address": "10.0.1.6",
+            "private_ip_addresses": [
+              "10.0.1.6"
+            ],
+            "resource_group_name": "RG-FileServerLab",
+            "tags": {},
+            "timeouts": null,
+            "virtual_machine_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/DC01"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.dc01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_network_interface",
+      "name": "fs01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "accelerated_networking_enabled": false,
+            "applied_dns_servers": [],
+            "auxiliary_mode": "",
+            "auxiliary_sku": "",
+            "dns_servers": [],
+            "edge_zone": "",
+            "enable_accelerated_networking": false,
+            "enable_ip_forwarding": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/fs01-nic",
+            "internal_dns_name_label": "",
+            "internal_domain_name_suffix": "4kmbcnis5jsefflqs2qtj4m1ne.gx.internal.cloudapp.net",
+            "ip_configuration": [
+              {
+                "gateway_load_balancer_frontend_ip_configuration_id": "",
+                "name": "internal",
+                "primary": true,
+                "private_ip_address": "10.0.1.4",
+                "private_ip_address_allocation": "Dynamic",
+                "private_ip_address_version": "IPv4",
+                "public_ip_address_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/fs01-pip",
+                "subnet_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab/subnets/Subnet-Servers"
+              }
+            ],
+            "ip_forwarding_enabled": false,
+            "location": "centralus",
+            "mac_address": "7C-ED-8D-C0-D1-AB",
+            "name": "fs01-nic",
+            "private_ip_address": "10.0.1.4",
+            "private_ip_addresses": [
+              "10.0.1.4"
+            ],
+            "resource_group_name": "RG-FileServerLab",
+            "tags": {},
+            "timeouts": null,
+            "virtual_machine_id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/FS01"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.fs01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_network_security_group",
+      "name": "nsg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkSecurityGroups/NSG-RDP",
+            "location": "centralus",
+            "name": "NSG-RDP",
+            "resource_group_name": "RG-FileServerLab",
+            "security_rule": [
+              {
+                "access": "Allow",
+                "description": "",
+                "destination_address_prefix": "*",
+                "destination_address_prefixes": [],
+                "destination_application_security_group_ids": [],
+                "destination_port_range": "3389",
+                "destination_port_ranges": [],
+                "direction": "Inbound",
+                "name": "Allow-RDP-3389",
+                "priority": 100,
+                "protocol": "Tcp",
+                "source_address_prefix": "35.150.251.162/32",
+                "source_address_prefixes": [],
+                "source_application_security_group_ids": [],
+                "source_port_range": "*",
+                "source_port_ranges": []
+              }
+            ],
+            "tags": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_public_ip",
+      "name": "client01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_method": "Static",
+            "ddos_protection_mode": "VirtualNetworkInherited",
+            "ddos_protection_plan_id": null,
+            "domain_name_label": null,
+            "edge_zone": "",
+            "fqdn": null,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/client01-pip",
+            "idle_timeout_in_minutes": 4,
+            "ip_address": "172.173.107.135",
+            "ip_tags": {},
+            "ip_version": "IPv4",
+            "location": "centralus",
+            "name": "client01-pip",
+            "public_ip_prefix_id": null,
+            "resource_group_name": "RG-FileServerLab",
+            "reverse_fqdn": null,
+            "sku": "Standard",
+            "sku_tier": "Regional",
+            "tags": {},
+            "timeouts": null,
+            "zones": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_public_ip",
+      "name": "dc01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_method": "Static",
+            "ddos_protection_mode": "VirtualNetworkInherited",
+            "ddos_protection_plan_id": null,
+            "domain_name_label": null,
+            "edge_zone": "",
+            "fqdn": null,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/dc01-pip",
+            "idle_timeout_in_minutes": 4,
+            "ip_address": "74.249.241.33",
+            "ip_tags": {},
+            "ip_version": "IPv4",
+            "location": "centralus",
+            "name": "dc01-pip",
+            "public_ip_prefix_id": null,
+            "resource_group_name": "RG-FileServerLab",
+            "reverse_fqdn": null,
+            "sku": "Standard",
+            "sku_tier": "Regional",
+            "tags": {},
+            "timeouts": null,
+            "zones": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_public_ip",
+      "name": "fs01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_method": "Static",
+            "ddos_protection_mode": "VirtualNetworkInherited",
+            "ddos_protection_plan_id": null,
+            "domain_name_label": null,
+            "edge_zone": "",
+            "fqdn": null,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/publicIPAddresses/fs01-pip",
+            "idle_timeout_in_minutes": 4,
+            "ip_address": "52.173.123.48",
+            "ip_tags": {},
+            "ip_version": "IPv4",
+            "location": "centralus",
+            "name": "fs01-pip",
+            "public_ip_prefix_id": null,
+            "resource_group_name": "RG-FileServerLab",
+            "reverse_fqdn": null,
+            "sku": "Standard",
+            "sku_tier": "Regional",
+            "tags": {},
+            "timeouts": null,
+            "zones": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_resource_group",
+      "name": "rg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab",
+            "location": "centralus",
+            "managed_by": "",
+            "name": "RG-FileServerLab",
+            "tags": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo1NDAwMDAwMDAwMDAwLCJkZWxldGUiOjU0MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjo1NDAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_subnet",
+      "name": "subnet",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "address_prefixes": [
+              "10.0.1.0/24"
+            ],
+            "default_outbound_access_enabled": true,
+            "delegation": [],
+            "enforce_private_link_endpoint_network_policies": false,
+            "enforce_private_link_service_network_policies": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab/subnets/Subnet-Servers",
+            "name": "Subnet-Servers",
+            "private_endpoint_network_policies": "Enabled",
+            "private_endpoint_network_policies_enabled": true,
+            "private_link_service_network_policies_enabled": true,
+            "resource_group_name": "RG-FileServerLab",
+            "service_endpoint_policy_ids": [],
+            "service_endpoints": [],
+            "timeouts": null,
+            "virtual_network_name": "VNET-FileServerLab"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_virtual_network",
+      "name": "vnet",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "address_space": [
+              "10.0.0.0/16"
+            ],
+            "bgp_community": "",
+            "ddos_protection_plan": [],
+            "dns_servers": [],
+            "edge_zone": "",
+            "encryption": [],
+            "flow_timeout_in_minutes": 0,
+            "guid": "351198f2-fa12-4264-9570-972134f99b6c",
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab",
+            "location": "centralus",
+            "name": "VNET-FileServerLab",
+            "resource_group_name": "RG-FileServerLab",
+            "subnet": [
+              {
+                "address_prefix": "10.0.1.0/24",
+                "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/virtualNetworks/VNET-FileServerLab/subnets/Subnet-Servers",
+                "name": "Subnet-Servers",
+                "security_group": ""
+              }
+            ],
+            "tags": {},
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxODAwMDAwMDAwMDAwLCJkZWxldGUiOjE4MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoxODAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_resource_group.rg"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_windows_virtual_machine",
+      "name": "client01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "additional_capabilities": [],
+            "additional_unattend_content": [],
+            "admin_password": "PasswordVMlab123!",
+            "admin_username": "azureadmin",
+            "allow_extension_operations": true,
+            "availability_set_id": "",
+            "boot_diagnostics": [],
+            "bypass_platform_safety_checks_on_user_schedule_enabled": false,
+            "capacity_reservation_group_id": "",
+            "computer_name": "CLIENT01",
+            "custom_data": null,
+            "dedicated_host_group_id": "",
+            "dedicated_host_id": "",
+            "disk_controller_type": "SCSI",
+            "edge_zone": "",
+            "enable_automatic_updates": true,
+            "encryption_at_host_enabled": false,
+            "eviction_policy": "",
+            "extensions_time_budget": "PT1H30M",
+            "gallery_application": [],
+            "hotpatching_enabled": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/CLIENT01",
+            "identity": [],
+            "license_type": "",
+            "location": "centralus",
+            "max_bid_price": -1,
+            "name": "CLIENT01",
+            "network_interface_ids": [
+              "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/client01-nic"
+            ],
+            "os_disk": [
+              {
+                "caching": "ReadWrite",
+                "diff_disk_settings": [],
+                "disk_encryption_set_id": "",
+                "disk_size_gb": 127,
+                "name": "CLIENT01_OsDisk_1_2efeb366fea2405daa5973290fffc5b0",
+                "secure_vm_disk_encryption_set_id": "",
+                "security_encryption_type": "",
+                "storage_account_type": "Standard_LRS",
+                "write_accelerator_enabled": false
+              }
+            ],
+            "os_image_notification": [],
+            "patch_assessment_mode": "ImageDefault",
+            "patch_mode": "AutomaticByOS",
+            "plan": [],
+            "platform_fault_domain": -1,
+            "priority": "Regular",
+            "private_ip_address": "10.0.1.5",
+            "private_ip_addresses": [
+              "10.0.1.5"
+            ],
+            "provision_vm_agent": true,
+            "proximity_placement_group_id": "",
+            "public_ip_address": "172.173.107.135",
+            "public_ip_addresses": [
+              "172.173.107.135"
+            ],
+            "reboot_setting": "",
+            "resource_group_name": "RG-FileServerLab",
+            "secret": [],
+            "secure_boot_enabled": false,
+            "size": "Standard_D2s_v3",
+            "source_image_id": "",
+            "source_image_reference": [
+              {
+                "offer": "windows-11",
+                "publisher": "MicrosoftWindowsDesktop",
+                "sku": "win11-23h2-pro",
+                "version": "latest"
+              }
+            ],
+            "tags": {},
+            "termination_notification": [],
+            "timeouts": null,
+            "timezone": "",
+            "user_data": "",
+            "virtual_machine_id": "56ce078b-7f79-45b6-86c6-a186e47fe5d1",
+            "virtual_machine_scale_set_id": "",
+            "vm_agent_platform_updates_enabled": true,
+            "vtpm_enabled": false,
+            "winrm_listener": [],
+            "zone": ""
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "admin_password"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "custom_data"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoyNzAwMDAwMDAwMDAwLCJkZWxldGUiOjI3MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoyNzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_interface.client01",
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.client01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_windows_virtual_machine",
+      "name": "dc01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "additional_capabilities": [],
+            "additional_unattend_content": [],
+            "admin_password": "PasswordVMlab123!",
+            "admin_username": "azureadmin",
+            "allow_extension_operations": true,
+            "availability_set_id": "",
+            "boot_diagnostics": [],
+            "bypass_platform_safety_checks_on_user_schedule_enabled": false,
+            "capacity_reservation_group_id": "",
+            "computer_name": "DC01",
+            "custom_data": null,
+            "dedicated_host_group_id": "",
+            "dedicated_host_id": "",
+            "disk_controller_type": "SCSI",
+            "edge_zone": "",
+            "enable_automatic_updates": true,
+            "encryption_at_host_enabled": false,
+            "eviction_policy": "",
+            "extensions_time_budget": "PT1H30M",
+            "gallery_application": [],
+            "hotpatching_enabled": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/DC01",
+            "identity": [],
+            "license_type": "",
+            "location": "centralus",
+            "max_bid_price": -1,
+            "name": "DC01",
+            "network_interface_ids": [
+              "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/dc01-nic"
+            ],
+            "os_disk": [
+              {
+                "caching": "ReadWrite",
+                "diff_disk_settings": [],
+                "disk_encryption_set_id": "",
+                "disk_size_gb": 127,
+                "name": "DC01_OsDisk_1_1aeab7ed8f864c02ae1212c69f0e188b",
+                "secure_vm_disk_encryption_set_id": "",
+                "security_encryption_type": "",
+                "storage_account_type": "Standard_LRS",
+                "write_accelerator_enabled": false
+              }
+            ],
+            "os_image_notification": [],
+            "patch_assessment_mode": "ImageDefault",
+            "patch_mode": "AutomaticByOS",
+            "plan": [],
+            "platform_fault_domain": -1,
+            "priority": "Regular",
+            "private_ip_address": "10.0.1.6",
+            "private_ip_addresses": [
+              "10.0.1.6"
+            ],
+            "provision_vm_agent": true,
+            "proximity_placement_group_id": "",
+            "public_ip_address": "74.249.241.33",
+            "public_ip_addresses": [
+              "74.249.241.33"
+            ],
+            "reboot_setting": "",
+            "resource_group_name": "RG-FileServerLab",
+            "secret": [],
+            "secure_boot_enabled": false,
+            "size": "Standard_D2s_v3",
+            "source_image_id": "",
+            "source_image_reference": [
+              {
+                "offer": "WindowsServer",
+                "publisher": "MicrosoftWindowsServer",
+                "sku": "2022-datacenter-azure-edition",
+                "version": "latest"
+              }
+            ],
+            "tags": {},
+            "termination_notification": [],
+            "timeouts": null,
+            "timezone": "",
+            "user_data": "",
+            "virtual_machine_id": "65b98ab6-c786-4c04-91a4-4bec7491acf4",
+            "virtual_machine_scale_set_id": "",
+            "vm_agent_platform_updates_enabled": true,
+            "vtpm_enabled": false,
+            "winrm_listener": [],
+            "zone": ""
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "admin_password"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "custom_data"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoyNzAwMDAwMDAwMDAwLCJkZWxldGUiOjI3MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoyNzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_interface.dc01",
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.dc01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "azurerm_windows_virtual_machine",
+      "name": "fs01",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "additional_capabilities": [],
+            "additional_unattend_content": [],
+            "admin_password": "PasswordVMlab123!",
+            "admin_username": "azureadmin",
+            "allow_extension_operations": true,
+            "availability_set_id": "",
+            "boot_diagnostics": [],
+            "bypass_platform_safety_checks_on_user_schedule_enabled": false,
+            "capacity_reservation_group_id": "",
+            "computer_name": "FS01",
+            "custom_data": null,
+            "dedicated_host_group_id": "",
+            "dedicated_host_id": "",
+            "disk_controller_type": "SCSI",
+            "edge_zone": "",
+            "enable_automatic_updates": true,
+            "encryption_at_host_enabled": false,
+            "eviction_policy": "",
+            "extensions_time_budget": "PT1H30M",
+            "gallery_application": [],
+            "hotpatching_enabled": false,
+            "id": "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Compute/virtualMachines/FS01",
+            "identity": [],
+            "license_type": "",
+            "location": "centralus",
+            "max_bid_price": -1,
+            "name": "FS01",
+            "network_interface_ids": [
+              "/subscriptions/bb51e169-e247-413c-a504-e063cc11aa8a/resourceGroups/RG-FileServerLab/providers/Microsoft.Network/networkInterfaces/fs01-nic"
+            ],
+            "os_disk": [
+              {
+                "caching": "ReadWrite",
+                "diff_disk_settings": [],
+                "disk_encryption_set_id": "",
+                "disk_size_gb": 127,
+                "name": "FS01_OsDisk_1_780c601fd0b647eaaee34da0c60f6e6a",
+                "secure_vm_disk_encryption_set_id": "",
+                "security_encryption_type": "",
+                "storage_account_type": "Standard_LRS",
+                "write_accelerator_enabled": false
+              }
+            ],
+            "os_image_notification": [],
+            "patch_assessment_mode": "ImageDefault",
+            "patch_mode": "AutomaticByOS",
+            "plan": [],
+            "platform_fault_domain": -1,
+            "priority": "Regular",
+            "private_ip_address": "10.0.1.4",
+            "private_ip_addresses": [
+              "10.0.1.4"
+            ],
+            "provision_vm_agent": true,
+            "proximity_placement_group_id": "",
+            "public_ip_address": "52.173.123.48",
+            "public_ip_addresses": [
+              "52.173.123.48"
+            ],
+            "reboot_setting": "",
+            "resource_group_name": "RG-FileServerLab",
+            "secret": [],
+            "secure_boot_enabled": false,
+            "size": "Standard_D2s_v3",
+            "source_image_id": "",
+            "source_image_reference": [
+              {
+                "offer": "WindowsServer",
+                "publisher": "MicrosoftWindowsServer",
+                "sku": "2022-datacenter-azure-edition",
+                "version": "latest"
+              }
+            ],
+            "tags": {},
+            "termination_notification": [],
+            "timeouts": null,
+            "timezone": "",
+            "user_data": "",
+            "virtual_machine_id": "69635cdd-44a6-4f00-bd04-44d74093557a",
+            "virtual_machine_scale_set_id": "",
+            "vm_agent_platform_updates_enabled": true,
+            "vtpm_enabled": false,
+            "winrm_listener": [],
+            "zone": ""
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "admin_password"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "custom_data"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoyNzAwMDAwMDAwMDAwLCJkZWxldGUiOjI3MDAwMDAwMDAwMDAsInJlYWQiOjMwMDAwMDAwMDAwMCwidXBkYXRlIjoyNzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "azurerm_network_interface.fs01",
+            "azurerm_network_security_group.nsg",
+            "azurerm_public_ip.fs01",
+            "azurerm_resource_group.rg",
+            "azurerm_subnet.subnet",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_nsg",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "time_sleep",
+      "name": "wait_after_nsg",
+      "provider": "provider[\"registry.terraform.io/hashicorp/time\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "create_duration": "45s",
+            "destroy_duration": null,
+            "id": "2026-03-07T00:36:45Z",
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "azurerm_network_security_group.nsg",
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet",
+            "time_sleep.wait_after_vnet"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "time_sleep",
+      "name": "wait_after_vnet",
+      "provider": "provider[\"registry.terraform.io/hashicorp/time\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "create_duration": "45s",
+            "destroy_duration": null,
+            "id": "2026-03-07T00:35:56Z",
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "azurerm_resource_group.rg",
+            "azurerm_virtual_network.vnet"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
