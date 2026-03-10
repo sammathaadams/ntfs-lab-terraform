@@ -2,6 +2,10 @@
 terraform.tfvars
 terraform.tfstate
 terraform.tfstate.backup
+terraform.tfstate.*.backup
 .terraform/
 .terraform.lock.hcl
 crash.log
+
+# Claude Code local settings
+.claude/
