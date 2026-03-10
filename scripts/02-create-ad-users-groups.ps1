@@ -1,0 +1,55 @@
+# =============================================================
+# Script: 02-create-ad-users-groups.ps1
+# Run on: DC01
+# Purpose: Create OUs, security groups, and test users in AD
+# =============================================================
+
+$domain     = "lab.local"
+$domainDN   = "DC=lab,DC=local"
+$password   = ConvertTo-SecureString "P@ssw0rd123!" -AsPlainText -Force
+
+# ── Create Organizational Units ───────────────────────────────
+$ous = @("Lab Users", "Lab Computers", "Lab Groups")
+foreach ($ou in $ous) {
+    New-ADOrganizationalUnit -Name $ou -Path $domainDN -ProtectedFromAccidentalDeletion $false
+    Write-Host "Created OU: $ou" -ForegroundColor Yellow
+}
+
+# ── Create Security Groups ────────────────────────────────────
+$groups = @("GRP_Finance", "GRP_HR", "GRP_Sales", "GRP_IT")
+foreach ($group in $groups) {
+    New-ADGroup -Name $group `
+                -GroupScope Global `
+                -GroupCategory Security `
+                -Path "OU=Lab Groups,$domainDN"
+    Write-Host "Created group: $group" -ForegroundColor Yellow
+}
+
+# ── Create Test Users ─────────────────────────────────────────
+$users = @(
+    @{ First = "John";  Last = "Smith"; Username = "john.smith";  Group = "GRP_IT"      },
+    @{ First = "Sarah"; Last = "Jones"; Username = "sarah.jones"; Group = "GRP_Finance"  },
+    @{ First = "Mike";  Last = "Brown"; Username = "mike.brown";  Group = "GRP_Finance"  },
+    @{ First = "Lisa";  Last = "White"; Username = "lisa.white";  Group = "GRP_HR"       },
+    @{ First = "Tom";   Last = "Davis"; Username = "tom.davis";   Group = "GRP_Sales"    }
+)
+
+foreach ($user in $users) {
+    New-ADUser -GivenName $user.First `
+               -Surname $user.Last `
+               -Name "$($user.First) $($user.Last)" `
+               -SamAccountName $user.Username `
+               -UserPrincipalName "$($user.Username)@$domain" `
+               -Path "OU=Lab Users,$domainDN" `
+               -AccountPassword $password `
+               -Enabled $true `
+               -PasswordNeverExpires $true
+
+    Add-ADGroupMember -Identity $user.Group -Members $user.Username
+    Write-Host "Created user: $($user.Username) -> $($user.Group)" -ForegroundColor Cyan
+}
+
+# lisa.white also gets read access to Finance via GRP_HR (handled by NTFS)
+# No additional group membership needed
+
+Write-Host "`nDone! OUs, groups, and users created." -ForegroundColor Green
