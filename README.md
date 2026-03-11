@@ -216,8 +216,16 @@ foreach ($share in $shares) {
 
 ## Teardown
 
+Use the Azure CLI to delete the resource group — this is faster and more reliable than `terraform destroy` as Azure handles resource deletion in the correct order automatically:
+
 ```bash
-terraform destroy
+az group delete -n RG-FileServerLab --yes --no-wait
+```
+
+Then clear the Terraform state to keep it in sync:
+
+```bash
+terraform state rm $(terraform state list | tr '\n' ' ')
 ```
 
 > **Important:** Always destroy resources when finished to avoid ongoing charges.
