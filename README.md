@@ -114,7 +114,7 @@ Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddres
 Add-Computer -DomainName "lab.local" -Credential (Get-Credential) -Restart
 ```
 
-> **Note:** Replace `<DC01_PRIVATE_IP>` with the private IP from your Terraform output (default: `10.0.1.6`). Use `LAB\azureadmin` credentials when prompted.
+> **Note:** Replace `<DC01_PRIVATE_IP>` with the private IP from your Terraform output (default: `10.0.1.4`). Use `LAB\azureadmin` credentials when prompted.
 
 ---
 

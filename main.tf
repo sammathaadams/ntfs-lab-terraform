@@ -108,7 +108,8 @@ resource "azurerm_network_interface" "dc01" {
   ip_configuration {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "10.0.1.4"
     public_ip_address_id          = azurerm_public_ip.dc01.id
   }
 
@@ -254,4 +255,21 @@ resource "azurerm_windows_virtual_machine" "client01" {
   }
 
   depends_on = [time_sleep.wait_after_nsg]
+}
+
+# -----------------------------
+# Enable RDP on CLIENT01 (Windows 11 has RDP disabled by default)
+# -----------------------------
+resource "azurerm_virtual_machine_extension" "client01_enable_rdp" {
+  name                 = "enable-rdp"
+  virtual_machine_id   = azurerm_windows_virtual_machine.client01.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+
+  settings = jsonencode({
+    commandToExecute = "powershell -Command \"Set-ItemProperty -Path 'HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server' -Name 'fDenyTSConnections' -Value 0; Enable-NetFirewallRule -DisplayGroup 'Remote Desktop'\""
+  })
+
+  depends_on = [azurerm_windows_virtual_machine.client01]
 }
