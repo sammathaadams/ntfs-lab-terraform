@@ -106,15 +106,15 @@ DC01 will restart automatically.
 RDP into each machine and run:
 
 ```powershell
-# Set DNS to point to DC01's private IP (check Terraform output for actual IP)
-$adapter = Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
-Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddresses "<DC01_PRIVATE_IP>"
+# Set DNS to point to DC01's private IP
+$adapter = Get-NetAdapter | Where-Object {$_.Status -eq "Up"} | Select-Object -First 1
+Set-DnsClientServerAddress -InterfaceIndex $adapter.InterfaceIndex -ServerAddresses "10.0.1.4"
 
 # Join the domain
 Add-Computer -DomainName "lab.local" -Credential (Get-Credential) -Restart
 ```
 
-> **Note:** Replace `<DC01_PRIVATE_IP>` with the private IP from your Terraform output (default: `10.0.1.4`). Use `LAB\azureadmin` credentials when prompted.
+> **Note:** Use `LAB\azureadmin` credentials when prompted. DC01's private IP is statically set to `10.0.1.4`.
 
 ---
 
@@ -123,7 +123,7 @@ Add-Computer -DomainName "lab.local" -Credential (Get-Credential) -Restart
 RDP into **DC01** and run:
 
 ```powershell
-.\scripts\02-create-ad-users-groups.ps1
+.\scripts\01-create-ad-users-groups.ps1
 ```
 
 This creates:
@@ -139,7 +139,7 @@ This creates:
 RDP into **FS01** and run:
 
 ```powershell
-.\scripts\01-configure-shares-and-permissions.ps1
+.\scripts\02-configure-shares-and-permissions.ps1
 ```
 
 Creates shares at `C:\Shares\` and applies NTFS permissions.
@@ -242,8 +242,8 @@ ntfs-lab-terraform/
 ├── versions.tf                # Provider version constraints
 ├── terraform.tfvars.example   # Example variable values
 └── scripts/
-    ├── 01-configure-shares-and-permissions.ps1
-    ├── 02-create-ad-users-groups.ps1
+    ├── 01-create-ad-users-groups.ps1
+    ├── 02-configure-shares-and-permissions.ps1
     └── 03-configure-rdp-gpo.ps1
 ```
 

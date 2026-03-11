@@ -1,8 +1,10 @@
 # =============================================================
-# Script: 02-create-ad-users-groups.ps1
+# Script: 01-create-ad-users-groups.ps1
 # Run on: DC01
 # Purpose: Create OUs, security groups, and test users in AD
 # =============================================================
+
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 $domain     = "lab.local"
 $domainDN   = "DC=lab,DC=local"

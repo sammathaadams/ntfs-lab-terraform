@@ -1,8 +1,10 @@
 # =============================================================
-# Script: 01-configure-shares-and-permissions.ps1
+# Script: 02-configure-shares-and-permissions.ps1
 # Run on: FS01
 # Purpose: Create SMB shares and apply NTFS permissions
 # =============================================================
+
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 
 $domain   = "LAB"
 $basePath = "C:\Shares"
@@ -50,30 +52,30 @@ function Set-FolderPermissions {
 
 Write-Host "`nSetting permissions on Finance..." -ForegroundColor Green
 Set-FolderPermissions -path "$basePath\Finance" -permissions @(
-    @{ Identity = "$domain\GRP_Finance";        Rights = "M" },   # Modify
-    @{ Identity = "$domain\GRP_HR";             Rights = "R" },   # Read
-    @{ Identity = "$domain\GRP_IT";             Rights = "F" },   # Full Control
-    @{ Identity = "BUILTIN\Administrators";     Rights = "F" }
+    @{ Identity = "$domain\GRP_Finance";        Rights = "(OI)(CI)M" },   # Modify
+    @{ Identity = "$domain\GRP_HR";             Rights = "(OI)(CI)R" },   # Read
+    @{ Identity = "$domain\GRP_IT";             Rights = "(OI)(CI)F" },   # Full Control
+    @{ Identity = "BUILTIN\Administrators";     Rights = "(OI)(CI)F" }
 )
 
 Write-Host "`nSetting permissions on HR..." -ForegroundColor Green
 Set-FolderPermissions -path "$basePath\HR" -permissions @(
-    @{ Identity = "$domain\GRP_HR";             Rights = "M" },   # Modify
-    @{ Identity = "$domain\GRP_IT";             Rights = "F" },   # Full Control
-    @{ Identity = "BUILTIN\Administrators";     Rights = "F" }
+    @{ Identity = "$domain\GRP_HR";             Rights = "(OI)(CI)M" },   # Modify
+    @{ Identity = "$domain\GRP_IT";             Rights = "(OI)(CI)F" },   # Full Control
+    @{ Identity = "BUILTIN\Administrators";     Rights = "(OI)(CI)F" }
 )
 
 Write-Host "`nSetting permissions on Sales..." -ForegroundColor Green
 Set-FolderPermissions -path "$basePath\Sales" -permissions @(
-    @{ Identity = "$domain\GRP_Sales";          Rights = "M" },   # Modify
-    @{ Identity = "$domain\GRP_IT";             Rights = "F" },   # Full Control
-    @{ Identity = "BUILTIN\Administrators";     Rights = "F" }
+    @{ Identity = "$domain\GRP_Sales";          Rights = "(OI)(CI)M" },   # Modify
+    @{ Identity = "$domain\GRP_IT";             Rights = "(OI)(CI)F" },   # Full Control
+    @{ Identity = "BUILTIN\Administrators";     Rights = "(OI)(CI)F" }
 )
 
 Write-Host "`nSetting permissions on IT..." -ForegroundColor Green
 Set-FolderPermissions -path "$basePath\IT" -permissions @(
-    @{ Identity = "$domain\GRP_IT";             Rights = "F" },   # Full Control
-    @{ Identity = "BUILTIN\Administrators";     Rights = "F" }
+    @{ Identity = "$domain\GRP_IT";             Rights = "(OI)(CI)F" },   # Full Control
+    @{ Identity = "BUILTIN\Administrators";     Rights = "(OI)(CI)F" }
 )
 
 Write-Host "`nDone! All shares and NTFS permissions configured." -ForegroundColor Cyan
