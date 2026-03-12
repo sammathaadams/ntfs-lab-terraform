@@ -51,7 +51,7 @@ Azure IaC for Windows Server administration — Active Directory, NTFS access co
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
 - An active Azure subscription
 
-> **Cost Estimate:** Running all three VMs costs approximately $0.30–0.50/hour. Remember to run `terraform destroy` when finished to avoid unexpected charges.
+> **Cost Estimate:** Running all three VMs costs approximately $0.30–0.50/hour. Remember to run `az group delete -n RG-FileServerLab --yes` when finished to avoid unexpected charges.
 
 ---
 
@@ -154,10 +154,10 @@ RDP into **DC01** and run:
 .\scripts\03-configure-rdp-gpo.ps1
 ```
 
-Then on **CLIENT01** run:
+This script adds domain users to the Remote Desktop Users group on CLIENT01 automatically. If it prints a warning that CLIENT01 could not be reached via WinRM, RDP into CLIENT01 as `azureadmin` and run manually:
 
 ```powershell
-gpupdate /force
+Add-LocalGroupMember -Group "Remote Desktop Users" -Member "LAB\Domain Users"
 ```
 
 ---

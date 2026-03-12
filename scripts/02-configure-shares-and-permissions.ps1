@@ -43,7 +43,7 @@ function Set-FolderPermissions {
 
     # Apply each permission entry
     foreach ($perm in $permissions) {
-        icacls $path /grant "$($perm.Identity)`:($($perm.Rights))"
+        icacls $path /grant "$($perm.Identity)`:$($perm.Rights)"
         Write-Host "  Granted $($perm.Rights) to $($perm.Identity)" -ForegroundColor Cyan
     }
 }
