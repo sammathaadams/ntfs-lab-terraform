@@ -200,6 +200,24 @@ Open **File Explorer** and navigate to `\\FS01`. Test the access scenarios below
 
 ---
 
+## Pause the Lab
+
+If you plan to continue with [Lab 2 — Azure RBAC Access Control](https://github.com/sammathaadams/rbac-lab-terraform), keep the resource group and VMs in place. Stop them to avoid compute charges while you're not actively using them:
+
+```bash
+az vm stop --ids $(az vm list -g RG-FileServerLab --query "[].id" -o tsv) --no-wait
+```
+
+Restart them before picking up Lab 2:
+
+```bash
+az vm start --ids $(az vm list -g RG-FileServerLab --query "[].id" -o tsv) --no-wait
+```
+
+> **Note:** Stopped (deallocated) VMs do not incur compute charges, but managed disks and the Key Vault continue to accrue minimal storage costs.
+
+---
+
 ## Teardown
 
 Delete the resource group when finished — this removes all VMs, disks, NICs, the VNet, and the Key Vault:
