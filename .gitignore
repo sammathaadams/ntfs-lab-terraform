@@ -1,11 +1,34 @@
-# Terraform sensitive files
+# ── Terraform sensitive files ─────────────────────────────────────────────────
 terraform.tfvars
+*.tfvars
+!terraform.tfvars.example
+
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.*.backup
+*.tfstate
+*.tfstate.*
+
+# ── Terraform working directory ───────────────────────────────────────────────
 .terraform/
 .terraform.lock.hcl
+
+# ── Plan files (can contain sensitive variable values) ────────────────────────
+*.tfplan
+*.plan
 crash.log
 
-# Claude Code local settings
+# ── Override files ────────────────────────────────────────────────────────────
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ── Claude Code local settings ────────────────────────────────────────────────
 .claude/
+
+# ── OS and editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+*.swp
