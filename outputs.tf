@@ -27,3 +27,8 @@ output "client01_private_ip" {
   description = "Private IP for CLIENT01."
   value       = azurerm_network_interface.client01.private_ip_address
 }
+
+output "key_vault_name" {
+  description = "Name of the Azure Key Vault holding the VM admin password. Pass this to configure-lab.ps1 with -KeyVaultName."
+  value       = azurerm_key_vault.lab_kv.name
+}
