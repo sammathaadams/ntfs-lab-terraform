@@ -8,6 +8,7 @@ Azure IaC for Windows Server administration — Active Directory, NTFS access co
 
 - Deploying Windows Server infrastructure on Azure using Terraform
 - Storing secrets securely with Azure Key Vault (RBAC-based)
+- Managing Terraform state remotely in Azure Blob Storage
 - Promoting a server to an Active Directory Domain Controller
 - Automating VM configuration without RDP using `az vm run-command`
 - Configuring NTFS permissions and SMB file shares
@@ -32,9 +33,10 @@ Azure IaC for Windows Server administration — Active Directory, NTFS access co
 │  │   └─────────┘    └─────────┘    └─────────────┘      │  │
 │  └───────────────────────────────────────────────────────┘  │
 │                                                             │
-│   ┌─────────────────────┐                                   │
-│   │   Azure Key Vault   │  ← VM credentials stored here     │
-│   └─────────────────────┘                                   │
+│   ┌─────────────────────┐   ┌──────────────────────────┐   │
+│   │   Azure Key Vault   │   │  Azure Storage Account   │   │
+│   │  (VM credentials)   │   │   (Terraform state)      │   │
+│   └─────────────────────┘   └──────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -62,6 +64,31 @@ Azure IaC for Windows Server administration — Active Directory, NTFS access co
 
 ---
 
+## Pre-Setup — Remote State Backend (One Time)
+
+Terraform state is stored in Azure Blob Storage so it is encrypted at rest, never sits on local disk, and can be shared across machines.
+
+```bash
+# Create a dedicated resource group for state storage
+az group create --name RG-TerraformState --location "Central US"
+
+# Create a storage account (name must be globally unique, 3-24 lowercase chars)
+az storage account create --name <YOUR_STORAGE_ACCOUNT_NAME> \
+    --resource-group RG-TerraformState \
+    --sku Standard_LRS \
+    --encryption-services blob
+
+# Create the container
+az storage container create --name tfstate \
+    --account-name <YOUR_STORAGE_ACCOUNT_NAME>
+```
+
+Then open `backend.tf` and replace `REPLACE_WITH_YOUR_STORAGE_ACCOUNT_NAME` with the name you chose above.
+
+> **Note:** This step only needs to be done once. If you are continuing from Lab 1 and already have a `RG-TerraformState` storage account, skip this and just update `backend.tf` with that account name.
+
+---
+
 ## Step 1 — Configure Variables
 
 ```bash
@@ -73,12 +100,27 @@ Open `terraform.tfvars` and set your values:
 ```hcl
 location       = "Central US"
 rdp_source     = "YOUR_PUBLIC_IP/32"   # Find yours at whatismyip.com
-admin_password = "YourStrongPassword!" # Min 12 chars, upper+lower+number+symbol
 server_vm_size = "Standard_B2as_v2"
 client_vm_size = "Standard_B2as_v2"
 ```
 
-> **Security Note:** `terraform.tfvars` is excluded from git via `.gitignore`. Never commit passwords or sensitive data. The password you set here will be stored in Azure Key Vault during deployment.
+Set the admin password as an environment variable — it never touches disk:
+
+```powershell
+# PowerShell
+$env:TF_VAR_admin_password = "YourStrongPassword!"
+```
+
+```bash
+# Bash / Azure Cloud Shell
+export TF_VAR_admin_password="YourStrongPassword!"
+```
+
+> **Why env var?** Terraform automatically reads any `TF_VAR_*` environment variable as the matching input variable. The password exists in memory only — it is never written to disk, never appears in `terraform.tfvars`, and never risks being committed to source control. This is the enterprise-standard approach.
+>
+> **Password requirements:** Min 12 chars, upper + lower + number + symbol.
+
+> **Security Note:** `terraform.tfvars` is excluded from git via `.gitignore`. The password is also stored in Azure Key Vault during deployment, so you never need to type it again after `terraform apply`.
 
 ---
 
@@ -88,7 +130,7 @@ client_vm_size = "Standard_B2as_v2"
 # Login to Azure
 az login
 
-# Initialise providers
+# Initialise providers and connect to remote state backend
 terraform init
 
 # Preview what will be created
@@ -115,7 +157,7 @@ client01_public_ip = "20.x.x.x"
 
 ## Step 3 — Configure the Lab (Automated)
 
-This single command replaces all manual RDP sessions. It pushes PowerShell scripts to each VM through the Azure agent — no WinRM, no firewall changes needed.
+This single command replaces all manual RDP sessions. It pushes PowerShell scripts to each VM through the Azure agent using `az vm run-command` — no WinRM, no firewall changes needed.
 
 ```powershell
 .\configure-lab.ps1 -KeyVaultName "kv-fslab-a1b2c3d4"
@@ -124,7 +166,7 @@ This single command replaces all manual RDP sessions. It pushes PowerShell scrip
 The script runs through these stages automatically:
 
 | Stage | What Happens | VM |
-|-------|-------------|----|
+|-------|-------------|-----|
 | 1 | Promotes DC01 to Domain Controller for `lab.local` | DC01 |
 | 2 | Creates OUs, security groups, and test users in AD | DC01 |
 | 3 | Joins FS01 to `lab.local` | FS01 |
@@ -197,6 +239,7 @@ Open **File Explorer** and navigate to `\\FS01`. Test the access scenarios below
 | GPO not applying | Run `gpupdate /force` and wait 2–5 minutes. Check `gpresult /r` for errors |
 | Scripts fail to run manually | Set execution policy: `Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process` |
 | `az vm run-command` times out | VM may have restarted — `configure-lab.ps1` handles this automatically |
+| `terraform init` fails | Ensure `backend.tf` has a valid storage account name and the container exists |
 
 ---
 
@@ -232,7 +275,7 @@ Then clear Terraform state to keep it in sync:
 terraform state rm $(terraform state list | tr '\n' ' ')
 ```
 
-> **Important:** Always destroy resources when finished to avoid ongoing charges.
+> **Important:** Always destroy resources when finished to avoid ongoing charges. The `RG-TerraformState` resource group and storage account can be kept if you plan to use them for Lab 2.
 
 ---
 
@@ -245,6 +288,7 @@ ntfs-lab-terraform/
 ├── outputs.tf                                # Output values (IPs, Key Vault name)
 ├── versions.tf                               # Provider version constraints
 ├── keyvault.tf                               # Azure Key Vault + RBAC access
+├── backend.tf                                # Remote state backend (Azure Blob Storage)
 ├── terraform.tfvars.example                  # Safe template — commit this
 ├── terraform.tfvars                          # Your real values — DO NOT commit
 ├── .gitignore                                # Excludes tfvars, state, .terraform/

@@ -11,6 +11,9 @@
 #   terraform output key_vault_name  -> pass this to configure-lab.ps1
 ##############################################################################
 
+# -- Current Azure client (used for tenant_id and deployer object_id) --------
+data "azurerm_client_config" "current" {}
+
 # -- Random suffix so the Key Vault name is globally unique ------------------
 # Key Vault names must be globally unique across all of Azure (3-24 chars).
 resource "random_id" "kv_suffix" {

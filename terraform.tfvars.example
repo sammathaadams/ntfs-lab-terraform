@@ -1,5 +1,15 @@
 location       = "Central US"
 rdp_source     = "YOUR_PUBLIC_IP/32"
-admin_password = "YourStrongPassword123!"
-server_vm_size = "Standard_D2s_v3"
-client_vm_size = "Standard_D2s_v3"
+server_vm_size = "Standard_B2as_v2"
+client_vm_size = "Standard_B2as_v2"
+
+# admin_password is NOT set here — set it as an environment variable instead:
+#
+#   PowerShell:  $env:TF_VAR_admin_password = "YourStrongPassword!"
+#   Bash:        export TF_VAR_admin_password="YourStrongPassword!"
+#
+# Terraform automatically reads any TF_VAR_* environment variable as the
+# matching input variable. The password exists in memory only and is never
+# written to disk or committed to source control.
+#
+# Password requirements: min 12 chars, upper + lower + number + symbol.
