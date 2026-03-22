@@ -243,39 +243,36 @@ Open **File Explorer** and navigate to `\\FS01`. Test the access scenarios below
 
 ---
 
-## Pause the Lab
+## Step 5 — Stop the VMs (End of Lab 1)
 
-If you plan to continue with [Lab 2 — Azure RBAC Access Control](https://github.com/sammathaadams/rbac-lab-terraform), keep the resource group and VMs in place. Stop them to avoid compute charges while you're not actively using them:
+[Lab 2 — Azure RBAC Access Control](https://github.com/sammathaadams/rbac-lab-terraform) builds directly on this infrastructure — it assigns Azure RBAC roles to the FS01 VM. **Do not destroy the resource group.** Instead, stop the VMs to avoid compute charges while you move on to Lab 2:
 
 ```bash
 az vm stop --ids $(az vm list -g RG-FileServerLab --query "[].id" -o tsv) --no-wait
 ```
 
-Restart them before picking up Lab 2:
+> **Note:** Stopped (deallocated) VMs do not incur compute charges, but managed disks and the Key Vault continue to accrue minimal storage costs.
+
+When you're ready to start Lab 2, restart the VMs and give them 3–5 minutes to fully boot:
 
 ```bash
 az vm start --ids $(az vm list -g RG-FileServerLab --query "[].id" -o tsv) --no-wait
 ```
 
-> **Note:** Stopped (deallocated) VMs do not incur compute charges, but managed disks and the Key Vault continue to accrue minimal storage costs.
-
 ---
 
-## Teardown
+## Teardown (After Completing Both Labs)
 
-Delete the resource group when finished — this removes all VMs, disks, NICs, the VNet, and the Key Vault:
+Only destroy Lab 1 infrastructure after you have finished Lab 2. Run the Lab 2 `terraform destroy` first to remove RBAC assignments, then delete the Lab 1 resource group:
 
 ```bash
 az group delete -n RG-FileServerLab --yes --no-wait
 ```
 
-Then clear Terraform state to keep it in sync:
-
-```bash
-terraform state rm $(terraform state list | tr '\n' ' ')
-```
-
-> **Important:** Always destroy resources when finished to avoid ongoing charges. The `RG-TerraformState` resource group and storage account can be kept if you plan to use them for Lab 2.
+> **Important:** The `RG-TerraformState` resource group and storage account are shared between both labs. Delete it separately only when you are completely done with all labs:
+> ```bash
+> az group delete -n RG-TerraformState --yes --no-wait
+> ```
 
 ---
 
