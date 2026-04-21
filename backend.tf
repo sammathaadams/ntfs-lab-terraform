@@ -12,7 +12,7 @@
 #       --encryption-services blob
 #   az storage container create --name tfstate \
 #       --account-name <YOUR_STORAGE_ACCOUNT_NAME>
-#
+
 # Then replace REPLACE_WITH_YOUR_STORAGE_ACCOUNT_NAME below and run:
 #   terraform init
 ##############################################################################
@@ -20,7 +20,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "RG-TerraformState"
-    storage_account_name = "REPLACE_WITH_YOUR_STORAGE_ACCOUNT_NAME"
+    storage_account_name = "tfstatentfslab"
     container_name       = "tfstate"
     key                  = "ntfs-lab.terraform.tfstate"
   }
